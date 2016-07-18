@@ -7,7 +7,7 @@
 
 4. curl --globoff -X "GET" http://107.170.48.163/api/api.php/products?filter[]=desc,cs,"tablet"&filter[]=desc,cs,"acer"&satisfy=all
 
-5. curl --globoff -X "GET" http://mywebdevcourse.xyz/api/api.php/products?filter[]=desc,cs,"acer"&filter[]=price,le,100&satisfy=all
+5. curl --globoff -X "GET" http://107.170.48.163/api/api.php/products?filter[]=desc,cs,"acer"&filter[]=price,le,100&satisfy=all
 
 6. 
 
