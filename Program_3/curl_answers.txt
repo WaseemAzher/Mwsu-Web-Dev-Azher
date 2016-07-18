@@ -1,0 +1,18 @@
+
+
+
+
+
+
+2.curl -H "Content-Type: application/json" -X "POST" http://107.170.48.163/api/api.php/users -d '{"fname":"Salman","lname":"Kahn","display_name":"coolasiwannabe","email":"salman.kahn@indianactors.org","password":"123456789"}'
+
+
+
+
+
+
+
+
+
+
+9.curl -X "DELETE" http://107.170.48.163/api/api.php/users/20
