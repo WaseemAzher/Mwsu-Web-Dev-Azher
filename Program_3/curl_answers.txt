@@ -1,18 +1,18 @@
 
-
-
-
-
+1. curl -X "GET" http://107.170.48.163/api/api.php/users?filter=email,eq,"waseem@gmail.com"
 
 2.curl -H "Content-Type: application/json" -X "POST" http://107.170.48.163/api/api.php/users -d '{"fname":"Salman","lname":"Kahn","display_name":"coolasiwannabe","email":"salman.kahn@indianactors.org","password":"123456789"}'
 
+3.curl -X "GET" http://107.170.48.163/api/api.php/products?filter=price,eq,99.99
 
+4. curl --globoff -X "GET" http://107.170.48.163/api/api.php/products?filter[]=desc,cs,"tablet"&filter[]=desc,cs,"acer"&satisfy=all
 
+5. curl --globoff -X "GET" http://mywebdevcourse.xyz/api/api.php/products?filter[]=desc,cs,"acer"&filter[]=price,le,100&satisfy=all
 
+6. 
 
+7. curl --globoff -X "GET" http://107.170.48.163/api/api.php/products?filter[]catgeory,eq,"cellphones"&filter[]=desc,ne,"%apple%"&satisfy=all
 
-
-
-
+8. 
 
 9.curl -X "DELETE" http://107.170.48.163/api/api.php/users/20
