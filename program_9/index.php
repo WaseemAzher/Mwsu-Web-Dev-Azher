@@ -1,7 +1,4 @@
-<?php
-session_start();
-$sid = session_id();
-?>
+
 
 <!DOCTYPE html>
 <html>
@@ -13,9 +10,10 @@ $sid = session_id();
 	<script   src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src="./plugin/jquery.twbsPagination.js"></script>
+	<script src="./js/cookies.js"></script>
 	
 	<!--[if IE]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<style>
 
@@ -70,6 +68,50 @@ $sid = session_id();
 		body {
 			padding:20px;
 		}
+		
+
+
+    #custom-search-form {
+        margin:0;
+        margin-top: 5px;
+        padding: 0;
+    }
+ 
+    #custom-search-form .search-query {
+        padding-right: 3px;
+        padding-right: 4px \9;
+        padding-left: 3px;
+        padding-left: 4px \9;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+ 
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+ 
+    #custom-search-form button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+ 
+    .search-query:focus + button {
+        z-index: 3;   
+    }
+
+	#search_container{
+		padding-bottom:20px;
+	}
         
 	</style>
 </head>
@@ -86,6 +128,17 @@ $sid = session_id();
      </table>
   </div>
 	<div class="col-xs-6 col-sm-4">
+		<div class="row" id="search_container">
+        <div class="span12">
+            <form id="custom-search-form" class="form-search form-horizontal pull-right">
+                <div class="input-append span12">
+                    <input type="text" class="search-query" placeholder="Search" id="search-keys">
+                    <button type="submit" class="btn" id="search-btn"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </form>
+        </div>
+	</div>
+	<div class="row">
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<div class="panel-title">
@@ -132,6 +185,8 @@ $sid = session_id();
 				</div>
 			</div>
 		</div>
+	</div>	
+		
 </div>
 
 <div class="row">
@@ -205,9 +260,12 @@ $sid = session_id();
 <script>
 
 (function($) {
-    //http://esimakin.github.io/twbs-pagination/
+    //https://esimakin.github.io/twbs-pagination/
 	
-	var guid = <?php echo"\"{$sid}\";";?>
+	var guid = "rov007tnvf7aigqvlchtq572n5";	
+	//Cookies.set('test_cookie', guid,{ expires: Infinity , domain: 'mwsu-webdev.xyz'});
+	
+	console.log(Cookies.get('test_cookie'));
 	
 	console.log(guid);
 
@@ -224,7 +282,7 @@ $sid = session_id();
 
         };
     })();
-
+	
 
     myWait.show();
 
@@ -267,11 +325,21 @@ $sid = session_id();
 		var order = typeof order !== 'undefined' ?  ","+order : "";
     
         myWait.show();
-                
+		
+		var strings=$('#search-keys').val();
+       
+        if(strings)	 
+		{			
+		var url = "https://mwsu-web-dev.xyz/api/api.php/products?filter=desc,cs,"+strings+"&page=" + page + "," + page_size+ "&order=id";
+		console.log("https://mwsu-web-dev.xyz/api/api.php/products?filter=desc,cs,"+strings+"&page=" + page + "," + page_size+ "&order=id");
+        }
+        else               
         // Perform a get request to our api passing the page number and page size as parameters
-		//console.log("http://mwsu-webdev.xyz/api/api.php/products?order="+sort+"&page=" + page + "," + page_size);
-        $.get("https://mwsu-webdev.xyz/api/api.php/products?order="+sort+order+"&page=" + page + "," + page_size)
+	//	console.log("https://mwsu-webdev.xyz/api/api.php/products?order="+sort+order+"&page=" + page + "," + page_size);
+        var url = "https://mwsu-webdev.xyz/api/api.php/products?order="+sort+order+"&page=" + page + "," + page_size;
 
+		
+		$.get(url)
         // The '.done' method fires when the get request completes
         .done(function(data) {
         
@@ -303,7 +371,7 @@ $sid = session_id();
             for (var i = 0; i < records.length; i++) {
 
                 //Start a new row for each product and put the product id in a data-element
-                rows = rows + "<tr data-id="+records[i][0]+">";
+                rows = rows + "<tr data-id="+records[i][0]+" id=id"+records[i][0]+">";
 
                 // Loop through each item for a product and append a table data tag to our row
                 for (var j = 0; j < records[i].length; j++) {
@@ -343,106 +411,23 @@ $sid = session_id();
     
 
         });
-		
-		
-		function addCartItem(item){
-		
-		var row=''+
-		'<div class="rowdelete cart-item">'+
-		'<div class="row" id="item-'+item[0]+'">'+
-			'<div class="col-xs-2">'+ item[4] +
-			'</div>'+
-			'<div class="col-xs-3">'+
-			'	<h4 class="product-name"><strong>'+item[1]+'</strong></h4>'+
-			'</div>'+
-			'<div class="col-xs-7">'+
-			'	<div class="col-xs-4 text-right">'+
-			'		<h6><strong><span class="price">$'+item[3]+'</span><span class="text-muted" style="padding-left: 8px;"> x </span></strong></h6>'+
-			'	</div>'+
-			'	<div class="col-xs-5" >'+
-			'		<input type="textbox" class="form-control input-sm count"  value="1">'+
-			'	</div>'+
-			'	<div class="col-xs-2">'+
-			'		<button type="button" class="btnDelete btn btn-link btn-xs">'+
-			'			<span class="glyphicon glyphicon-trash"> </span>'+
-			'		</button>'+
-			'	</div>'+
-			'</div>'+
-		'</div>'+
-		'<hr>'+
-		'</div>';
-		
-		var postData = {};
-		postData['uid']=guid;
-		postData['pid']=item[0];
-		postData['count']=1;
-		postData['description']=item[1];
-		postData['price']=item[3];
-		postData['time-added']=Math.floor(Date.now() / 1000);
-		
-		console.log(postData);
-		
-		var cartTotal = parseFloat($('#cart-total').text());
-		var cartPrice= parseFloat(item[3]);
-		console.log(cartPrice);								
-		if(isNaN(cartTotal))
-			cartTotal = 0;
-       
-		cartTotal += parseFloat(item[3]);
-		console.log(cartTotal);
-		
-		$('#cart-body').append(row);
-		$('.btnDelete').click(function()
-		{
-		console.log('deleteCLICKED');
-		$this = $(this);
-		var column = $this.closest('.rowdelete');
-		column.remove();
-		updatePrice();		
-		});		
-		$('#cart-total').text(cartTotal)
-		$.post("https://mwsu-webdev.xyz/api/api.php/shopping_cart/",postData);
-		
-		
-		
-
-	}	
-		
-    }
-    
+    } // End .done
 	
 	$('#updateCart').click(function(){
-		var cartTotal=0;
 		$('.cart-item').each(function(){
-			var $price=parseFloat($(this).find('.price').text().replace("$", ""));
-			var $count=parseInt($(this).find('.count').val());
-			cartTotal += parseFloat($price*$count);
-			console.log(cartTotal);
+			console.log($(this).find('.price').text());
+			console.log($(this).find('.count').val());
+
 		});
-		$('#cart-total').text(cartTotal);
-		
 	});
-	
-	function updatePrice(){
-		var cartTotal=0;
-		$('.cart-item').each(function(){
-			var $price=parseFloat($(this).find('.price').text().replace("$", ""));
-			var $count=parseInt($(this).find('.count').val());
-			cartTotal += parseFloat($price*$count);
-			console.log(cartTotal);
-		});
-		$('#cart-total').text(cartTotal);
-		
-	}
-	
+    
     function getTotalPages(){
-        $.get("https://mwsu-webdev.xyz/api/api.php/products")
+        $.get("https://mwsu-webdev.xyz/shopping_search/total_pages.txt")
 
         // The '.done' method fires when the get request completes
         .done(function(data) {
 
-            total_records = data.products.records.length;
-            total_pages = parseInt(total_records / page_size);
+            var total_pages = data;
             loadTableData(1, 10);
             $('#pagination-demo').twbsPagination({
                 totalPages: total_pages,
@@ -456,8 +441,77 @@ $sid = session_id();
         });
 
     }
-    
 	
+	
+	$('#search-btn').click(function(event){
+		
+		var page=1;
+		var page_size=10;
+		event.preventDefault();
+		console.log($('#search-keys').val());
+		
+		var strings=$('#search-keys').val();	
+    //  $.get("https://mwsu-web-dev.xyz/api/api.php/products?filter=desc,cs,"+strings+"&page=" + page + "," + page_size)
+	  $.get("https://mwsu-web-dev.xyz/api/api.php/products?filter=desc,cs,"+strings)
+	  
+	   // The '.done' method fires when the get request completes
+        .done(function(data) {
+			console.log(data);
+	        total_records = data.products.records.length;
+            total_pages = parseInt(total_records / page_size);
+         //   var total_pages = data;
+           loadTableData(1,10);            
+	   });
+
+});
+	
+	
+    
+	function addCartItem(item){
+		
+		var row=''+
+		'<div class="row cart-item" id="item-'+item[0]+'">'+
+			'<div class="col-xs-2">'+ item[4] +
+			'</div>'+
+			'<div class="col-xs-3">'+
+			'	<h4 class="product-name"><strong>'+item[1]+'</strong></h4>'+
+			'</div>'+
+			'<div class="col-xs-7">'+
+			'	<div class="col-xs-4 text-right">'+
+			'		<h6><strong><span class="price">$'+item[3]+'</span><span class="text-muted"> x </span></strong></h6>'+
+			'	</div>'+
+			'	<div class="col-xs-5">'+
+			'		<input type="text" class="form-control input-sm count" value="1">'+
+			'	</div>'+
+			'	<div class="col-xs-2">'+
+			'		<button type="button" class="btn btn-link btn-xs">'+
+			'			<span class="glyphicon glyphicon-trash"> </span>'+
+			'		</button>'+
+			'	</div>'+
+			'</div>'+
+		'</div>'+
+		'<hr>';
+		
+		var postData = {};
+		postData['uid']=guid;
+		postData['pid']=item[0];
+		postData['count']=1;
+		postData['description']=item[1];
+		postData['price']=item[3];
+		postData['time-added']=Math.floor(Date.now() / 1000);
+		
+		console.log(postData);
+		var cartTotal = parseFloat($('#cart-total').text());
+		if(isNaN(cartTotal))
+			cartTotal = 0;
+
+		cartTotal += parseFloat(item[3]);
+		console.log(cartTotal);
+		$('#cart-body').append(row);
+		$('#cart-total').text(cartTotal)
+		$.post("https://mwsu-webdev.xyz/api/api.php/shopping_cart/",postData);
+	}
+
  
     
 	 function guid() {
@@ -470,11 +524,9 @@ $sid = session_id();
 		s4() + '-' + s4() + s4() + s4();
 	}
 	
-	
-	
     getTotalPages();
-	
-  
+
+
 }(jQuery));
 </script>
 </body>
