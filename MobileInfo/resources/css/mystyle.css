@@ -1,0 +1,115 @@
+/*Header-------------
+------------------*/
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+html{ 
+        color:rgb(119, 119, 119);
+        font-family:'lato','arial',sans-serif;
+        font-size:  20px;
+        font-weight: 300;
+    text-rendering: optimizeLegibility;
+   
+    
+}
+.row{
+        max-width: 1140px;
+        margin: 0 auto;
+}
+header{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.31),rgba(137, 124, 124, 0)),url(sd.jpg);
+    height: 100vh;
+    background-size: cover;
+   background-position: center;
+    
+}
+h1{ margin: 0;
+    color: #dedddb;
+    font-weight: 300;
+    font-size: 240%;
+    
+    letter-spacing: 1px;
+    word-spacing: 3px;
+    
+}
+.main{
+    
+    position:absolute;
+    width: 1140px;
+    top:65%;         
+    
+    
+    left:45%;           
+    transform:translate(-50%,-50%);
+    
+}
+.btn:link,
+.btn:visited{
+    display: inline-block;
+    padding: 15px 30px;
+    font-weight: 400;
+    text-decoration: none;
+   
+    border-radius: 30px;
+}
+    
+.btn-full:link,
+.btn-full:visited{
+     background-color:  #bdc3c7;
+    border:0.5px solid #fff; color:#fff;
+    
+}    
+    
+    
+.btn-ghost:link,
+.btn-ghost:visited{
+        border:3px solid   #bdc3c7; color:#bdc3c7;
+    
+}
+.btn:hover,
+.btn:active{
+       background-color:  #869198;
+    color: lemonchiffon;
+    transition: 0.7s;
+}
+
+.main-nav{
+        float:right;
+        list-style: none;
+}
+
+.main-nav li
+{   
+    display: inline-block;
+        margin-left: 40px;
+        padding: 10px 0px;
+        
+}
+.main-nav li a:link,
+.main-nav li a:visited{
+        text-decoration: none;
+    font-weight: 400;
+    color:whitesmoke;
+    border-bottom: 3px solid transparent;
+    transition:  1s;padding: 5px;
+    
+    border-radius: 3px 3px;
+   
+}
+
+.main-nav li a:hover,
+.main-nav li a:active{
+    
+    border-bottom: 3px solid #fff;
+    background-color: rgba(0, 0, 0, 0.23);
+    
+    
+}
+section{
+    background-image: url(download.jpg)
+    
+    
+    
+}
